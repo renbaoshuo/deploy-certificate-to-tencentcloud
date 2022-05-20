@@ -1,0 +1,24 @@
+name: Deploy SSL certificate to Tencent Cloud CDN
+description: Deploy SSL certificate to Tencent Cloud CDN.
+branding:
+  icon: lock
+  color: green
+inputs:
+  secret-id:
+    description: The secretId used to authenticate with Tencent Cloud.
+    required: true
+  secret-key:
+    description: The accessKeySecret used to authenticate with Tencent Cloud.
+    required: true
+  fullchain-file:
+    description: The file path of the PEM fullchain certificate.
+    required: true
+  key-file:
+    description: The file path of the PEM private key file.
+    required: true
+  cdn-domains:
+    description: Enter a list of CDN domains you want to deploy the certificate to.
+    required: true
+runs:
+  using: node12
+  main: bootstrap.js

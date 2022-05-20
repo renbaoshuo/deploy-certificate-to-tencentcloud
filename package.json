@@ -1,0 +1,13 @@
+{
+  "name": "deploy-certificate-to-tencentcloud",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/renbaoshuo/deploy-certificate-to-tencentcloud.git",
+  "author": "Baoshuo <i@baoshuo.ren>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@actions/core": "^1.8.2",
+    "tencentcloud-sdk-nodejs": "^4.0.344"
+  }
+}
