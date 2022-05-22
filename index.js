@@ -38,6 +38,7 @@ async function main() {
       Domain: domain,
       Https: {
         Switch: 'on',
+        Http2: 'on',
         CertInfo: {
           Certificate: cert,
           PrivateKey: key,
