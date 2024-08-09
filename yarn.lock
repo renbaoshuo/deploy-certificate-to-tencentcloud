@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@actions/core@^1.9.1":
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/@actions/core/-/core-1.9.1.tgz#97c0201b1f9856df4f7c3a375cdcdb0c2a2f750b"
-  integrity sha512-5ad+U2YGrmmiw6du20AQW5XuWo7UKN2052FjSV7MX+Wfjf8sCqcsZe62NfgHys4QI4/Y+vQvLKYL8jWtA1ZBTA==
+"@actions/core@^1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@actions/core/-/core-1.10.1.tgz#61108e7ac40acae95ee36da074fa5850ca4ced8a"
+  integrity sha512-3lBR9EDAY+iYIpTnTIXmWcNbX3T2kCkAEQGIQx4NVQ0575nk2k3GRZDTPQG+vVtS2izSLmINlxXf0uLtnrTP+g==
   dependencies:
     "@actions/http-client" "^2.0.1"
     uuid "^8.3.2"
@@ -111,10 +111,10 @@ node-fetch@^2.2.0:
   dependencies:
     whatwg-url "^5.0.0"
 
-tencentcloud-sdk-nodejs-common@^4.0.488:
+tencentcloud-sdk-nodejs@^4.0.914:
   version "4.0.914"
-  resolved "https://registry.yarnpkg.com/tencentcloud-sdk-nodejs-common/-/tencentcloud-sdk-nodejs-common-4.0.914.tgz#6b87c0f0f553d145c5ca9bd98fa0cd22859b8e4f"
-  integrity sha512-13rhJAnGb0ScqpuPGNSytEfHnxvI9AQ4qrZI/ojUBaXPmG41VH1pcC6FWjBeSZMj3Je7p4xZvO8tWMkXw4W7Dg==
+  resolved "https://registry.yarnpkg.com/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.914.tgz#395f8f9fdf0c9166c15fa5817ac9112282e081f4"
+  integrity sha512-7DlOlK7DxLkneM7XpjB6SOBK+YTyZJHOibw8CWUAY/M6LLW8AEokFXdD8v/M787cJiBev3g9qVtXKhFFfYOH3A==
   dependencies:
     form-data "^3.0.0"
     get-stream "^6.0.0"
@@ -124,26 +124,6 @@ tencentcloud-sdk-nodejs-common@^4.0.488:
     node-fetch "^2.2.0"
     tslib "1.13.0"
     uuid "^9.0.1"
-
-tencentcloud-sdk-nodejs-ssl@^4.0.913:
-  version "4.0.913"
-  resolved "https://registry.yarnpkg.com/tencentcloud-sdk-nodejs-ssl/-/tencentcloud-sdk-nodejs-ssl-4.0.913.tgz#e519a0643a7b3ce49e57916a7acdfd5886207448"
-  integrity sha512-BRdsUl94/11CJexsIir8uSKjF6lZJ9Pbh1e674rgxV9tVbQQ82dtsuwJnM7rF/upGdCLGSCbBGaMEWVdy8N/Nw==
-  dependencies:
-    tencentcloud-sdk-nodejs-common "^4.0.488"
-    tslib "1.13.0"
-
-tencentcloud-sdk-nodejs@^4.0.344:
-  version "4.0.344"
-  resolved "https://registry.yarnpkg.com/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.344.tgz#1884a52f8a6fcad0e71ce56d2369d726d0ae62e7"
-  integrity sha512-RVvd4o5rXfo48ynBfMC94w/wQEVZGGY7y+mMYnBlx9K64eRQ16W956HnC3ds1OvN3wsHsMiY+kZ2Py7CuCvEDg==
-  dependencies:
-    form-data "^3.0.0"
-    get-stream "^6.0.0"
-    https-proxy-agent "^5.0.0"
-    is-stream "^2.0.0"
-    node-fetch "^2.2.0"
-    tslib "1.13.0"
 
 tr46@~0.0.3:
   version "0.0.3"

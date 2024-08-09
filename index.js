@@ -2,7 +2,6 @@ const core = require('@actions/core');
 
 const fs = require('fs');
 const tencentcloud = require('tencentcloud-sdk-nodejs');
-const tencentcloudSsl = require('tencentcloud-sdk-nodejs-ssl');
 
 const input = {
   secretId: core.getInput('secret-id'),
@@ -69,7 +68,7 @@ async function queryCdnDomainCerts(domains) {
 }
 
 async function uploadCert(cert, key) {
-  const client = new tencentcloudSsl.ssl.v20191205.Client(sslClientConfig);
+  const client = new tencentcloud.ssl.v20191205.Client(sslClientConfig);
 
   const params = {
     CertificatePublicKey: cert,
@@ -92,7 +91,7 @@ async function uploadCert(cert, key) {
 }
 
 async function updateCert(oldCertId, newCertId) {
-  const client = new tencentcloudSsl.ssl.v20191205.Client(sslClientConfig);
+  const client = new tencentcloud.ssl.v20191205.Client(sslClientConfig);
 
   const params = {
     OldCertificateId: oldCertId,
