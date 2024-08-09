@@ -12,8 +12,8 @@ jobs:
     name: Deploy certificate to Tencent Cloud CDN
     runs-on: ubuntu-latest
     steps:
-      - name: Check out
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           # If you just commited and pushed your newly issued certificate to this repo in a previous job,
           # use `ref` to make sure checking out the newest commit in this job
@@ -34,3 +34,10 @@ jobs:
             cdn1.example.com
             cdn2.example.com
 ```
+
+## Permissions
+
+Please make sure the Tencent Cloud account you use has the following permissions:
+
+- QcloudCDNFullAccess
+- QcloudSSLFullAccess
