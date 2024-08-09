@@ -18,7 +18,7 @@ jobs:
           # If you just commited and pushed your newly issued certificate to this repo in a previous job,
           # use `ref` to make sure checking out the newest commit in this job
           ref: ${{ github.ref }}
-      - uses: renbaoshuo/deploy-certificate-to-tencentcloud@v1
+      - uses: renbaoshuo/deploy-certificate-to-tencentcloud@v2
         with:
           # Use Access Key
           secret-id: ${{ secrets.QCLOUD_SECRET_ID }}
