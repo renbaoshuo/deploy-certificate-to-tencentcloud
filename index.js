@@ -127,7 +127,7 @@ async function updateCert(oldCertId, newCertId) {
       (data) => {
         console.debug(data);
 
-        return data.DeployStatus === 1;
+        return (data.UpdateSyncProgress || []).every((task) => task.Status === 1);
       },
       (err) => {
         if (err.Code === 'FailedOperation.CertificateDeployInstanceEmpty') {
