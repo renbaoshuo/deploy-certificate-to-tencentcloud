@@ -53,6 +53,7 @@ async function queryCdnDomainCerts(domains) {
   return await client.DescribeDomainsConfig(params).then(
     (data) => {
       console.log('Success:', 'DescribeDomainsConfig');
+      console.debug(data);
 
       const res = data.Domains.map((domain) => ({
         domain: domain.Domain,
@@ -83,6 +84,7 @@ async function uploadCert(cert, key) {
   return await client.UploadCertificate(params).then(
     (data) => {
       console.log('Success:', 'UploadCertificate', data.CertificateId);
+      console.debug(data);
 
       return data.CertificateId;
     },
@@ -107,6 +109,7 @@ async function updateCert(oldCertId, newCertId) {
   await client.UpdateCertificateInstance(params).then(
     (data) => {
       console.log('Success:', 'UpdateCertificateInstance', oldCertId, newCertId);
+      console.debug(data);
     },
     (err) => {
       console.error(err);
@@ -121,7 +124,11 @@ async function updateCert(oldCertId, newCertId) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const isDone = await client.UpdateCertificateInstance(params).then(
-      (data) => data.DeployStatus === 1,
+      (data) => {
+        console.debug(data);
+
+        return data.DeployStatus === 1;
+      },
       (err) => {
         if (err.Code === 'FailedOperation.CertificateDeployInstanceEmpty') {
           console.log(
@@ -166,6 +173,7 @@ async function deleteCertificates(certIds) {
   const taskIds = await client.DeleteCertificates(params).then(
     (data) => {
       console.log('Success:', 'DeleteCertificates');
+      console.debug(data);
 
       const certTaskIds = data.CertTaskIds;
 
@@ -188,6 +196,7 @@ async function deleteCertificates(certIds) {
     const isDone = await client.DescribeDeleteCertificatesTaskResult({ TaskIds: taskIds }).then(
       (data) => {
         console.log('Success:', 'DescribeDeleteCertificatesTaskResult');
+        console.debug(data);
 
         const tasks = data.DeleteTaskResult;
 
@@ -240,6 +249,7 @@ async function updateCdnDomainConfig(domain, certId) {
   await client.UpdateDomainConfig(params).then(
     (data) => {
       console.log('Success:', data);
+      console.debug(data);
     },
     (err) => {
       console.error(err);
