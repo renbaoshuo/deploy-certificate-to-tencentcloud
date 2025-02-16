@@ -114,6 +114,37 @@ async function updateCert(oldCertId, newCertId) {
       process.exit(1);
     }
   );
+
+  for (let i = 1; i <= 60; i++) {
+    console.log('Waiting for update task to complete...', `(${i}/60)`);
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const isDone = await client.UpdateCertificateInstance(params).then(
+      (data) => data.DeployStatus === 1,
+      (err) => {
+        if (err.Code === 'FailedOperation.CertificateDeployInstanceEmpty') {
+          console.log(
+            'Update task skipped because "FailedOperation.CertificateDeployInstanceEmpty".'
+          );
+
+          return true;
+        }
+
+        console.error(err);
+        core.setFailed(err);
+        process.exit(1);
+      }
+    );
+
+    if (isDone) {
+      console.log('Update task completed');
+
+      return;
+    }
+  }
+
+  console.error('Update task timeout');
 }
 
 const DELETE_STATUS_MAP = {
