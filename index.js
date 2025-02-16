@@ -54,10 +54,14 @@ async function queryCdnDomainCerts(domains) {
     (data) => {
       console.log('Success:', 'DescribeDomainsConfig');
 
-      return data.Domains.map((domain) => ({
+      const res = data.Domains.map((domain) => ({
         domain: domain.Domain,
         certId: domain.Https?.CertInfo?.CertId,
       }));
+
+      console.log(res);
+
+      return res;
     },
     (err) => {
       console.error(err);
@@ -78,7 +82,7 @@ async function uploadCert(cert, key) {
 
   return await client.UploadCertificate(params).then(
     (data) => {
-      console.log('Success:', data);
+      console.log('Success:', 'UploadCertificate', data.CertificateId);
 
       return data.CertificateId;
     },
@@ -102,7 +106,7 @@ async function updateCert(oldCertId, newCertId) {
 
   await client.UpdateCertificateInstance(params).then(
     (data) => {
-      console.log('Success:', data);
+      console.log('Success:', 'UpdateCertificateInstance', oldCertId, newCertId);
     },
     (err) => {
       console.error(err);
@@ -110,6 +114,83 @@ async function updateCert(oldCertId, newCertId) {
       process.exit(1);
     }
   );
+}
+
+const DELETE_STATUS_MAP = {
+  0: 'In progress',
+  1: 'Completed',
+  2: 'Failed',
+  3: 'Unauthorized, need `SSL_QCSLinkedRoleInReplaceLoadCertificate` role',
+  4: 'Failed because of cert is using by other resources',
+  5: 'Internal timeout',
+};
+
+async function deleteCertificates(certIds) {
+  const client = new tencentcloud.ssl.v20191205.Client(sslClientConfig);
+  const params = {
+    CertificateIds: certIds,
+    IsSync: true,
+  };
+
+  const taskIds = await client.DeleteCertificates(params).then(
+    (data) => {
+      console.log('Success:', 'DeleteCertificates');
+
+      const certTaskIds = data.CertTaskIds;
+
+      console.log(certTaskIds);
+
+      return certTaskIds.map((x) => x.TaskId);
+    },
+    (err) => {
+      console.error(err);
+      core.setFailed(err);
+      process.exit(1);
+    }
+  );
+
+  for (let i = 1; i <= 60; i++) {
+    console.log('Waiting for delete task to complete...', `(${i}/60)`);
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const isDone = await client.DescribeDeleteCertificatesTaskResult({ TaskIds: taskIds }).then(
+      (data) => {
+        console.log('Success:', 'DescribeDeleteCertificatesTaskResult');
+
+        const tasks = data.DeleteTaskResult;
+
+        console.log(
+          tasks
+            .map((task) =>
+              [
+                task.TaskId,
+                task.CertId,
+                DELETE_STATUS_MAP[task.Status] || task.Status,
+                task.Error || '',
+                (task.Domains || []).join(','),
+              ].join('\t')
+            )
+            .join('\n')
+        );
+
+        return tasks.every((x) => x.Status !== 0);
+      },
+      (err) => {
+        console.error(err);
+        core.setFailed(err);
+        process.exit(1);
+      }
+    );
+
+    if (isDone) {
+      console.log('Delete task completed');
+
+      return;
+    }
+  }
+
+  console.error('Delete task timeout');
 }
 
 async function updateCdnDomainConfig(domain, certId) {
@@ -171,6 +252,11 @@ async function main() {
 
       console.log('Successfully updated domain', domain, 'with cert', certId);
     }
+  }
+
+  // Delete old certs
+  if (oldCertIds.length > 0) {
+    await deleteCertificates(oldCertIds);
   }
 }
 
