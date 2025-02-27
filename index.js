@@ -268,7 +268,20 @@ async function main() {
   const certId = await uploadCert(cert, key, input.certId);
   console.log('CertId:', certId);
 
-  const oldCerts = await queryCdnDomainCerts(domains);
+  // batch query, 4 domains per request
+  const domainChunks = domains.reduce((acc, domain) => {
+    if (acc.length === 0 || acc[acc.length - 1].length === 4) {
+      acc.push([]);
+    }
+
+    acc[acc.length - 1].push(domain);
+
+    return acc;
+  }, []);
+
+  const oldCerts = (
+    await Promise.all(domainChunks.map((chunk) => queryCdnDomainCerts(chunk)))
+  ).flat();
   const oldCertIds = [...new Set(oldCerts.map((x) => x.certId).filter(Boolean))];
   const domainWithoutCert = oldCerts
     .filter((x) => !x.certId)
