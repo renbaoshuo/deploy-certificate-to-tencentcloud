@@ -279,6 +279,8 @@ async function main() {
     return acc;
   }, []);
 
+  console.log('domainChunks:', domainChunks);
+
   const oldCerts = (
     await Promise.all(domainChunks.map((chunk) => queryCdnDomainCerts(chunk)))
   ).flat();
